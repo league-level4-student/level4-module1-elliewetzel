@@ -4,7 +4,7 @@ import java.util.Random;
 
 // Generics in Java are a way to define one variable that can act as different types.
 // Generics can be used in methods and classes. 
-// The syntax for generics are the angle brackets <>
+// The syntax for generics are the angle brackets <> 
 
 
 public class IntroToGenerics {
