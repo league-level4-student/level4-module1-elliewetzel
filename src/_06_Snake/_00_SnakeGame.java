@@ -86,9 +86,19 @@ public class _00_SnakeGame implements ActionListener, KeyListener {
 		//   Use timer.setDelay(delay) with different numbers to change the speed
 		//   of the game. The smaller the number, the faster it goes.
 		switch (choice) {
-		
+		case "Expert":
+			timer.setDelay(20);
+			break;
+		case "Moderate":
+			timer.setDelay(60);
+			break;	
+		case "Beginner":
+			timer.setDelay(105);
+			break;
+				
 		}
 		//3. start the timer
+		timer.start();
 	}
 
 	public static void main(String[] args) {
@@ -98,41 +108,68 @@ public class _00_SnakeGame implements ActionListener, KeyListener {
 	@Override
 	public void keyTyped(KeyEvent e) {
 		// TODO Auto-generated method stub
-
 	}
-
+	
 	@Override
 	public void keyPressed(KeyEvent e) {
 		//1. Use a switch statement on e.getKeyCode()
 		//   to determine which key was pressed.
-		
+		switch(e.getKeyCode()) {
+		case(37): /*left*/
+			snake.setDirection(Direction.LEFT);
+			break;
+		case(38): /*up*/
+			snake.setDirection(Direction.UP);
+			break;
+		case(39): /*right*/
+			snake.setDirection(Direction.RIGHT);
+			break;
+		case(40): /*down*/
+			snake.setDirection(Direction.DOWN);
+			break;
+		case(32): /*space*/
+			snake.feed();
+			break;
+		}
 		// if an arrow key is pressed, set the snake's 
-		// direction accordingly
-		
-		// if the space key is pressed, call the snake's feed method
-		
+		// direction accordingly		
+		// if the space key is pressed, call the snake's feed method		
 	}
 
 	private void setFoodLocation() {
 		//1. Create a new Location object that is set to a random location
-		
+		Random L1 = new Random();
+		Random L2 = new Random();
+		Location l = new Location(L1.nextInt(WIDTH), L2.nextInt(HEIGHT));
 		//2. set the foodLocation variable equal to the Location object you just created.
 		//   use the snake's isLocationOnSnake method to make sure you don't put the food on the snake
-		
+		for(int i =0; i < 9; i++) {
+		if(!snake.isLocationOnSnake(l)) {
+			foodLocation = l;
+		}
+		else {
+			l = new Location(L1.nextInt(WIDTH), L2.nextInt(HEIGHT));
+		}
+		}
 	}
 
 	private void gameOver() {
 		
 		//1. stop the timer
-		
+		timer.stop();
 		//2. tell the user their snake is dead
-		
+		JOptionPane.showMessageDialog(null, "Your snake is dead");
 		//3. ask them if they want to play again.
-		
+		int b = JOptionPane.showConfirmDialog(null, "Do you want to play again?");
 		//4. if they want to play again
 		//   reset the snake and the food and start the timer
 		//   else, exit the game
-		
+		if(b==0) {
+			Location l = new Location(WIDTH/2, HEIGHT/2);
+			snake.reset(loc);
+			setFoodLocation();
+			timer.start(); //if it doesn't work try restart
+		}
 	}
 
 	@Override
@@ -143,13 +180,19 @@ public class _00_SnakeGame implements ActionListener, KeyListener {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		//1. update the snake
-
+		snake.update();
 		//2. if the snake is colliding with its own body 
 		//   or if the snake is out of bounds, call gameOver
-
+		if(snake.isHeadCollidingWithBody()||snake.isOutOfBounds()) {
+			gameOver();
+		}
 		//3. if the location of the head is equal to the location of the food,
 		// 	 feed the snake and set the food location
-
+		if(snake.getHeadLocation()==foodLocation) {
+			snake.feed();
+			setFoodLocation();
+		}
 		//4. call panel.repaint();
+		panel.repaint();
 	}
 }
