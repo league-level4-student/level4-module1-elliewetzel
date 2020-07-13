@@ -166,7 +166,7 @@ public class _00_SnakeGame implements ActionListener, KeyListener {
 		//   else, exit the game
 		if(b==0) {
 			Location l = new Location(WIDTH/2, HEIGHT/2);
-			snake.reset(loc);
+			snake.reset(l);
 			setFoodLocation();
 			timer.start(); //if it doesn't work try restart
 		}
